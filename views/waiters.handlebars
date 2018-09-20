@@ -1,8 +1,10 @@
  
- <form action="/waiters/:username" method="post">
-  <input type="checkbox" id="day1" name="day" value="Monday">
-  <label for="day1">Monday</label>
-  <input type="checkbox" id="day2" name="day" value="Tuesday" >
+ <form action="/waiters/{{username}}" method="post">
+ {{#each displayDays }}
+  <input type="checkbox" id="day2" name="day" value="{{id}}">
+  <label >{{weekday}}</label>
+  {{/each}}
+  {{!-- <input type="checkbox" id="day2" name="day" value="Tuesday" >
   <label for="day2">Tuesday</label>
   <input type="checkbox" id="day3" name="day" value="Wednesday" >
   <label for="day3">Wednesday</label>
@@ -13,6 +15,6 @@
   <input type="checkbox" id="day6" name="day" value="Saturday">
   <label for="day6">Saturday</label>
   <input type="checkbox" id="day7" name="day" value="Sunday">
-  <label for="day7">Sunday</label>
+  <label for="day7">Sunday</label> --}}
     <input type="submit" value="Submit">
  </form>

@@ -1,4 +1,4 @@
-input[type=checkbox] + label {
+/* input[type=checkbox] + label {
     display: block;
     margin: 0.2em;
     cursor: pointer;
@@ -32,15 +32,15 @@ input[type=checkbox] + label {
     background-color: MediumSeaGreen;
     border-color: MediumSeaGreen;
     color: #fff;
-  }
+  } */
   
-  input[type=checkbox]:disabled + label:before {
+  /* input[type=checkbox]:disabled + label:before {
     transform: scale(1);
     border-color: #aaa;
-  }
+  } */
   
-  input[type=checkbox]:checked:disabled + label:before {
+  /* input[type=checkbox]:checked:disabled + label:before {
     transform: scale(1);
     background-color: #bfb;
     border-color: #bfb;
-  }
+  } */

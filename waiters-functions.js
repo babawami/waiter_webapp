@@ -1,26 +1,40 @@
 'use strict';
 module.exports = (pool) => {
+    const getWeekDays = async () => {
+        let days = await pool.query('SELECT * FROM weekdays');
+        return days.rows;
+    };
+
     const waitersNames = async (name) => {
         name = name.charAt(0).toUpperCase() + name.slice(1);
-        let nameExists = await pool.query('Select 1 from waiters WHERE names = $1', [name]);
-        if (nameExists.rows.length === 0) {
+        let nameExists = await pool.query('Select * from waiters WHERE names = $1', [name]);
+         let waiterDays = await pool.query('SELECT id  FROM days_booked ');
+        if (nameExists.rowCount.length === 0) {
             await pool.query('INSERT INTO waiters(names) VALUES($1)', [name]);
             return 'name added';
-        } else if (nameExists.rows.length === 1) {
+        } else if (nameExists.rowCount.length > 0) {
+            // let days = getWeekDays();
+            // let waiterDays = bookedDays();
+            
+            // for (let weekdays of days.id) {
+            //     for (const shiftDays of waiterDays) {
+                    
+            //     }
+            // }
             return 'name exists';
         }
     };
 
     const bookingOfDays = async (enteredName, scheduleday) => {
-        // scheduleday loop
-
-        let userName = await pool.query('SELECT * FROM waiters where names = $1', [enteredName]);
-        let daybooked = await pool.query('SELECT *  FROM weekdays WHERE weekday = $1', [scheduleday]);
-
-        let userID = userName.rows[0].id;
-        let daysID = daybooked.rows[0].id;
-        await pool.query('INSERT INTO days_booked(name_id, daybooked_id) VALUES($1,$2)', [userID, daysID]);
+        enteredName = enteredName.charAt(0).toUpperCase() + enteredName.slice(1);
+        let waiter = await pool.query('SELECT * FROM waiters where names = $1', [enteredName]);
+        let userID = waiter.rows[0].id;
+        for (let dayId of scheduleday) {
+            await pool.query('INSERT INTO days_booked(name_id, daybooked_id) VALUES($1,$2)', [userID, dayId]);
+        }
     };
+
+
 
     const bookedDays = async () => {
         let shifts = await pool.query('SELECT *  FROM days_booked ');
@@ -36,6 +50,7 @@ module.exports = (pool) => {
         waitersNames,
         bookingOfDays,
         bookedDays,
-        allShifts
+        allShifts,
+        getWeekDays
     };
 };

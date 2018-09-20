@@ -39,20 +39,32 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.get('/', async (req, res, next) => {
+
+app.post('/waiters/:username', async (req, res, next) => {
     try {
-        res.render('home');
+        let username = req.params.username;
+        let days = req.body.day;
+        console.log(days);
+        let displayDays = await waiterServices.getWeekDays();
+         
+        await waiterServices.bookingOfDays(username, days);
+        res.render('waiters', { displayDays });
     } catch (err) {
         next(err.stack);
     }
 });
 
-app.post('/waiters/:username', async (req, res, next) => {
+app.get('/waiters/:username', async (req, res, next) => {
     try {
-        let username = req.body.user;
-      let storednamed = await waiterServices.waitersNames(username);
-      console.log(storednamed);
-        res.render('waiters');
+        let username = req.params.username;
+       let checkwaiter = await waiterServices.waitersNames(username);
+       //console.log(checkwaiter);
+
+        let displayDays = await waiterServices.getWeekDays();
+        let selectdays = await waiterServices.bookedDays();
+        console.log(selectdays.daybooked_id);
+
+        res.render('waiters', { username, displayDays });
     } catch (err) {
         next(err.stack);
     }
