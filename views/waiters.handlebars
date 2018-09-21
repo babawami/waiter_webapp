@@ -1,7 +1,7 @@
  
  <form action="/waiters/{{username}}" method="post">
  {{#each displayDays }}
-  <input type="checkbox" id="day2" name="day" value="{{id}}">
+  <input type="checkbox" id="day2" name="day" value="{{weekday}}" {{checked}} >
   <label >{{weekday}}</label>
   {{/each}}
   {{!-- <input type="checkbox" id="day2" name="day" value="Tuesday" >
