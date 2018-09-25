@@ -12,7 +12,6 @@ module.exports = (pool) => {
 
         if (nameExists.rows.length === 0) {
             await pool.query('INSERT INTO waiters(names) VALUES($1)', [name]);
-        
             return days;
         } else if (nameExists.rows.length === 1) {
             let waiterDays = await pool.query('SELECT waiters.names, weekdays.weekday FROM days_booked INNER JOIN waiters ON days_booked.name_id = waiters.id INNER JOIN weekdays ON days_booked.daybooked_id = weekdays.id where names=$1', [name]);
