@@ -61,6 +61,14 @@ app.get('/waiters/:username', async (req, res, next) => {
     }
 });
 
+app.get('/', async (req, res, next) => {
+    try {
+        res.render('home');
+    } catch (err) {
+        next(err.stack);
+    }
+});
+
 // configure the port number using and environment number
 var portNumber = process.env.PORT || 3010;
 
