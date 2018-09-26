@@ -1,3 +1,22 @@
+
+.test{
+  display: inline-table;
+  margin:2em;
+}
+
+.green{
+  color:green;
+}
+
+.crimson{
+  color: crimson;
+}
+
+.orange{
+  color: orange;
+}
+
+
 /* input[type=checkbox] + label {
     display: block;
     margin: 0.2em;

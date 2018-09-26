@@ -69,6 +69,20 @@ app.get('/', async (req, res, next) => {
     }
 });
 
+app.get('/days', async (req, res, next) => {
+    try {
+        let allShifts = await waiterServices.admin();
+        // console.log(allShifts);
+        // let waiters = allShifts.map((names) => names.waiter);
+
+        // console.log(waiters)
+        
+        res.render('days', { allShifts });
+    } catch (err) {
+        next(err.stack);
+    }
+});
+
 // configure the port number using and environment number
 var portNumber = process.env.PORT || 3010;
 
