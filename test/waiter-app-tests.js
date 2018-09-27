@@ -14,6 +14,7 @@ const pool = new Pool({
 describe('It should store names of the waiters', function () {
     beforeEach(async function () {
         await pool.query('DELETE FROM waiters');
+        await pool.query('DELETE FROM days_booked');
     });
     it('Add names to the database', async () => {
         let waitersData = waitersFunctions(pool);
@@ -21,28 +22,63 @@ describe('It should store names of the waiters', function () {
         let allNames = await pool.query('SELECT * FROM waiters');
         assert.equal(allNames.rows[0].names, 'Andrew');
     });
-    it("Return error message 'name exists' if name already in database", async () => {
+    it('Return days that has been booked by the waiter', async () => {
         let waitersData = waitersFunctions(pool);
+        await waitersData.getWeekDays();
         await waitersData.waitersNames('Andrew');
-        let nameExits = await waitersData.waitersNames('Andrew');
-        await pool.query('SELECT * FROM waiters');
-        assert.equal(nameExits, 'name exists');
+        await waitersData.bookingOfDays('Andrew', ['Monday', 'Tuesday']);
+        let booked = await waitersData.waitersNames('Andrew');
+        assert.deepEqual(booked, [ { id: 1, weekday: 'Monday', checked: 'checked' },
+            { id: 2, weekday: 'Tuesday', checked: 'checked' },
+            { id: 3, weekday: 'Wednesday' },
+            { id: 4, weekday: 'Thursday' },
+            { id: 5, weekday: 'Friday' },
+            { id: 6, weekday: 'Saturday' },
+            { id: 7, weekday: 'Sunday' }]);
     });
-    it('Join table according to the name and days selected to work', async () => {
+    it('Show all the days booked by the waiters ', async () => {
         let waitersData = waitersFunctions(pool);
+        await waitersData.getWeekDays();
         await waitersData.waitersNames('Andrew');
-        await waitersData.waitersNames('Anele');
-        await waitersData.bookingOfDays('Andrew', 'Monday');
-        await waitersData.bookingOfDays('Andrew', 'Tuesday');
-        await waitersData.bookingOfDays('Anele', 'Tuesday');
-        await waitersData.bookingOfDays('Anele', 'Wednesday');
-        await waitersData.bookedDays();
-        let weekSchedule = await waitersData.allShifts();
-        console.log(weekSchedule);
-        assert.deepEqual(weekSchedule, [ { names: 'Andrew', weekday: 'Monday' },
-        { names: 'Andrew', weekday: 'Tuesday' },
-        { names: 'Anele', weekday: 'Tuesday' },
-        { names: 'Anele', weekday: 'Wednesday' } ]);
+        await waitersData.waitersNames('Yegan');
+        await waitersData.bookingOfDays('Andrew', ['Monday', 'Tuesday']);
+        await waitersData.bookingOfDays('Yegan', ['Wednesday', 'Friday']);
+        await waitersData.waitersNames('Andrew');
+        await waitersData.waitersNames('Yegan');
+        let admin = await waitersData.admin();
+        assert.deepEqual(admin, [
+            { id: 1, weekday: 'Monday', waiter: [ { 'names': 'Andrew' } ], color: 'orange' },
+            { id: 2, weekday: 'Tuesday', waiter: [ { 'names': 'Andrew' } ], color: 'orange' },
+            { id: 3, weekday: 'Wednesday', waiter: [ { 'names': 'Yegan' } ], color: 'orange' },
+            { id: 4, weekday: 'Thursday', waiter: [], color: 'crimson' },
+            { id: 5, weekday: 'Friday', waiter: [ { 'names': 'Yegan' } ], color: 'orange' },
+            { id: 6, weekday: 'Saturday', waiter: [], color: 'crimson' },
+            { id: 7, weekday: 'Sunday', waiter: [], color: 'crimson' }]);
+    });
+    it('Add colour crimson for the overbooking or no booking, orange below 3 booked waiters and green for 3 booked waiters', async () => {
+        let waitersData = waitersFunctions(pool);
+        await waitersData.getWeekDays();
+        await waitersData.waitersNames('Andrew');
+        await waitersData.waitersNames('Yegan');
+        await waitersData.waitersNames('Busisele');
+        await waitersData.waitersNames('Sbu');
+        await waitersData.bookingOfDays('Andrew', ['Monday', 'Tuesday', 'Friday']);
+        await waitersData.bookingOfDays('Yegan', ['Monday', 'Friday']);
+        await waitersData.bookingOfDays('Busisele', ['Monday', 'Friday']);
+        await waitersData.bookingOfDays('Sbu', ['Friday']);
+        await waitersData.waitersNames('Andrew');
+        await waitersData.waitersNames('Yegan');
+        await waitersData.waitersNames('Busisele');
+        await waitersData.waitersNames('Sbu');
+        let admin = await waitersData.admin();
+        assert.deepEqual(admin, [
+            { id: 1, weekday: 'Monday', waiter: [ { 'names': 'Andrew' }, { 'names': 'Busisele' }, { 'names': 'Yegan' } ], color: 'green' },
+            { id: 2, weekday: 'Tuesday', waiter: [ { 'names': 'Andrew' } ], color: 'orange' },
+            { id: 3, weekday: 'Wednesday', waiter: [], color: 'crimson' },
+            { id: 4, weekday: 'Thursday', waiter: [], color: 'crimson' },
+            { id: 5, weekday: 'Friday', waiter: [ { 'names': 'Andrew' }, { 'names': 'Busisele' }, { 'names': 'Sbu' }, { 'names': 'Yegan' } ], color: 'crimson' },
+            { id: 6, weekday: 'Saturday', waiter: [], color: 'crimson' },
+            { id: 7, weekday: 'Sunday', waiter: [], color: 'crimson' }]);
     });
 
     after(function () {

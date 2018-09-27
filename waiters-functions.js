@@ -42,15 +42,15 @@ module.exports = (pool) => {
         }
     };
 
-    const bookedDays = async () => {
-        let shifts = await pool.query('SELECT *  FROM days_booked ');
-        return shifts.rows;
-    };
+    // const bookedDays = async () => {
+    //     let shifts = await pool.query('SELECT *  FROM days_booked ');
+    //     return shifts.rows;
+    // };
 
-    const allShifts = async () => {
-        let weekSchedule = await pool.query();
-        return weekSchedule.rows;
-    };
+    // const allShifts = async () => {
+    //     let weekSchedule = await pool.query();
+    //     return weekSchedule.rows;
+    // };
 
     const admin = async () => {
         let days = await getWeekDays();
@@ -61,20 +61,25 @@ module.exports = (pool) => {
                 dayofweek.color = 'green';
             } else if (dayofweek.waiter.length > 3 || dayofweek.waiter.length === 0) {
                 dayofweek.color = 'crimson';
-            } else if (dayofweek.waiter.length < 3 && dayofweek.waiter.length > 0 ) {
+            } else if (dayofweek.waiter.length < 3 && dayofweek.waiter.length > 0) {
                 dayofweek.color = 'orange';
             }
         }
-        console.log(days);
         return days;
+    };
+
+    const reset = async () => {
+        let resetSchedule = await pool.query('DELETE FROM waiters');
+        return resetSchedule.rows;
     };
 
     return {
         waitersNames,
         bookingOfDays,
-        bookedDays,
-        allShifts,
+        // bookedDays,
+        // allShifts,
         getWeekDays,
-        admin
+        admin,
+        reset
     };
 };

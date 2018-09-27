@@ -25,8 +25,8 @@ INSERT INTO weekdays(weekday) VALUES('Sunday');
 CREATE TABLE days_booked
 (
     id serial not null PRIMARY KEY,
-    name_id int,
-    daybooked_id int,
+    name_id int NOT NULL,
+    daybooked_id int NOT NULL,
     foreign key(name_id) references waiters(id) ON DELETE CASCADE,
     foreign key(daybooked_id)references weekdays(id) ON DELETE CASCADE
 );

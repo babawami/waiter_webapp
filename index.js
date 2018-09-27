@@ -53,7 +53,6 @@ app.post('/waiters/:username', async (req, res, next) => {
 app.get('/waiters/:username', async (req, res, next) => {
     try {
         let username = req.params.username;
-
         let displayDays = await waiterServices.waitersNames(username);
         res.render('waiters', { username, displayDays });
     } catch (err) {
@@ -72,12 +71,16 @@ app.get('/', async (req, res, next) => {
 app.get('/days', async (req, res, next) => {
     try {
         let allShifts = await waiterServices.admin();
-        // console.log(allShifts);
-        // let waiters = allShifts.map((names) => names.waiter);
-
-        // console.log(waiters)
-        
         res.render('days', { allShifts });
+    } catch (err) {
+        next(err.stack);
+    }
+});
+
+app.get('/clear', async (req, res, next) => {
+    try {
+        await waiterServices.reset();
+        res.redirect('/days');
     } catch (err) {
         next(err.stack);
     }
