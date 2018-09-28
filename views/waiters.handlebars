@@ -1,20 +1,12 @@
  
  <form action="/waiters/{{username}}" method="post">
+ <div class="greet">
+           <h6>{{messages.greet}}</h6>
+        </div>
  {{#each displayDays }}
   <input type="checkbox" id="day2" name="day" value="{{weekday}}" {{checked}} >
   <label >{{weekday}}</label>
   {{/each}}
-  {{!-- <input type="checkbox" id="day2" name="day" value="Tuesday" >
-  <label for="day2">Tuesday</label>
-  <input type="checkbox" id="day3" name="day" value="Wednesday" >
-  <label for="day3">Wednesday</label>
-  <input type="checkbox" id="day4" name="day" value="Thursday">
-  <label for="day4">Thursday</label>
-  <input type="checkbox" id="day5" name="day" value="Friday">
-  <label for="day5">Friday</label>
-  <input type="checkbox" id="day6" name="day" value="Saturday">
-  <label for="day6">Saturday</label>
-  <input type="checkbox" id="day7" name="day" value="Sunday">
-  <label for="day7">Sunday</label> --}}
+
     <input type="submit" value="Submit">
  </form>

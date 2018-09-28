@@ -42,15 +42,15 @@ module.exports = (pool) => {
         }
     };
 
-    // const bookedDays = async () => {
-    //     let shifts = await pool.query('SELECT *  FROM days_booked ');
-    //     return shifts.rows;
-    // };
-
-    // const allShifts = async () => {
-    //     let weekSchedule = await pool.query();
-    //     return weekSchedule.rows;
-    // };
+    const checkWaiter = async (enteredName) => {
+        enteredName = enteredName.charAt(0).toUpperCase() + enteredName.slice(1);
+        let waiter = await pool.query('Select 1 from waiters WHERE names = $1', [enteredName]);
+        if (waiter.rows.length === 0) {
+            return 'welcome';
+        } else if (waiter.rows.length === 1) {
+            return 'exist';
+        }
+    };
 
     const admin = async () => {
         let days = await getWeekDays();
@@ -76,10 +76,9 @@ module.exports = (pool) => {
     return {
         waitersNames,
         bookingOfDays,
-        // bookedDays,
-        // allShifts,
         getWeekDays,
         admin,
+        checkWaiter,
         reset
     };
 };

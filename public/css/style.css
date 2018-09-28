@@ -16,6 +16,10 @@
   color: orange;
 }
 
+.greet{
+  text-transform: capitalize;
+}
+
 
 /* input[type=checkbox] + label {
     display: block;

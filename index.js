@@ -2,6 +2,8 @@
 
 const express = require('express');
 const exphbs = require('express-handlebars');
+const session = require('express-session');
+const flash = require('express-flash');
 const bodyParser = require('body-parser');
 const WaiterServices = require('./waiters-functions');
 const pg = require('pg');
@@ -39,6 +41,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+app.use(session({
+    secret: 'waiter booked',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(flash());
+
 app.post('/waiters/:username', async (req, res, next) => {
     try {
         let username = req.params.username;
@@ -53,6 +63,12 @@ app.post('/waiters/:username', async (req, res, next) => {
 app.get('/waiters/:username', async (req, res, next) => {
     try {
         let username = req.params.username;
+        let checkwaiter = await waiterServices.checkWaiter(username);
+        if (checkwaiter === 'welcome') {
+            req.flash('greet', `Welcome ${username} please select the days you want to book`);
+        } else if (checkwaiter === 'exist') {
+            req.flash('greet', `${username} here are your days you have booked`);
+        }
         let displayDays = await waiterServices.waitersNames(username);
         res.render('waiters', { username, displayDays });
     } catch (err) {
