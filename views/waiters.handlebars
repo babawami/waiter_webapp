@@ -1,12 +1,17 @@
- 
- <form action="/waiters/{{username}}" method="post">
- <div class="greet">
-           <h6>{{messages.greet}}</h6>
-        </div>
- {{#each displayDays }}
-  <input type="checkbox" id="day2" name="day" value="{{weekday}}" {{checked}} >
-  <label >{{weekday}}</label>
-  {{/each}}
 
+<div class="rows">
+<form action="/waiters/{{username}}" method="post">
+  <div class="greet">
+    <h5>{{messages.greet}}</h5>
+  </div>
+    {{#each displayDays}}
+  <label class="col s12 m2 l2">
+    <input type="checkbox" id="day2" name="day" value="{{weekday}}" {{checked}}/>
+    <span>{{weekday}}</span>
+  </label>
+  {{/each}}
+  <div>
     <input type="submit" value="Submit">
- </form>
+  </div>
+</form>
+</div>

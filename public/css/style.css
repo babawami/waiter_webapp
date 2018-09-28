@@ -1,23 +1,36 @@
+body{
+background-color: #f9f9f9;
+}
 
 .test{
   display: inline-table;
-  margin:2em;
+  /* margin:1em; */
 }
 
 .green{
-  color:green;
+  background-color:green;
+  padding: 5px;
+  color: white;
 }
 
 .crimson{
-  color: crimson;
+  background-color: crimson;
+  padding: 5px;
+  color: white;
 }
 
 .orange{
-  color: orange;
+  background-color: orange;
+  padding: 5px;
+  color: white;
 }
 
 .greet{
   text-transform: capitalize;
+}
+
+label{
+  display: inline-block;
 }
 
 

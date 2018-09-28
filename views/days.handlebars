@@ -1,17 +1,22 @@
 
 <div class="row">
+<div class="twelve columns">
+
 
   {{#each allShifts }}
-    <div class=" test one columns">
-    <h6 class="{{color}}">{{weekday}}</h6>
+    <div class=" test col s12  l1">
+   <h5 class="{{color}}"> {{weekday}}</h5>
     {{#each waiter}}
-     <h6>{{names}}</h6>
+     <h6> <i class="tiny material-icons">account_circle</i> {{names}}</h6>
      {{/each}}
     </div>  
     {{/each}}
-
-    <a href="/clear">Reset</a>
-
+    <br>
+<div>
+<a href="/clear"><button>Reset</button></a> 
+</div>
+     
+</div>
 </div>
     
   
