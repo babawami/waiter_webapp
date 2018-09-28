@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "8.9.4"
+
+language: node_js
+
+env:
+     - DB=postgresql://postgres@localhost:5432/weekly_schedule
+node_js:
+        - "8.9.4"
+
+before_script:
+  - psql -c 'create database  weekly_schedule;' -U postgres
+  - psql -U postgres -d weekly_schedule -a -f table.sql
+
+addons:
+    apt:
+    packages:
+    - postgresql-server-dev-9.2
