@@ -1,22 +1,29 @@
 
 <div class="row">
-<div class="twelve columns">
-
-
+  <Legend>Color-codes</Legend>
+<h6><i style="color:crimson" class="tiny material-icons">fiber_manual_record</i>No Waiter booked/ over subscribed for the day</h6>
+<h6><i style="color:green" class="tiny material-icons">fiber_manual_record</i> Enough Waiters For The day</h6>
+<h6><i style="color:orange" class="tiny material-icons">fiber_manual_record</i>More Waiters Are Needed </h6>
+</div>
+<div class="row">
   {{#each allShifts }}
-    <div class=" test col s12  l1">
-   <h5 class="{{color}}"> {{weekday}}</h5>
+    <div class=" test col s12 m6 l1">
+   <h5 class="booked {{color}}"> {{weekday}}</h5>
     {{#each waiter}}
-     <h6> <i class="tiny material-icons">account_circle</i> {{names}}</h6>
+     <h6>{{names}}</h6>
      {{/each}}
     </div>  
     {{/each}}
+   </div> 
     <br>
-<div>
-<a href="/clear"><button>Reset</button></a> 
-</div>
+    <div class="row">
+      <div class="break col s10">
+<a href="/clear"><button style="padding:10px; background-color:rgb(98, 153, 185); color:white">Reset</button></a>
+</div> 
+    </div>
+
      
-</div>
-</div>
+
+
     
   

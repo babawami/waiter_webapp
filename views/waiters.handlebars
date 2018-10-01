@@ -1,17 +1,31 @@
 
+<div class="row">
+  <div class=" col s12 m12 l12">
+<h4 class="responsive-h3">Waiters Weekly Schedule<i class=" medium material-icons">today</i></h4> 
+  </div>
+  
+</div>
 <div class="rows">
 <form action="/waiters/{{username}}" method="post">
   <div class="greet">
     <h5>{{messages.greet}}</h5>
+    <br>
   </div>
     {{#each displayDays}}
-  <label class="col s12 m2 l2">
+    <div class=" days col s12 l1">
+      <label>
     <input type="checkbox" id="day2" name="day" value="{{weekday}}" {{checked}}/>
     <span>{{weekday}}</span>
   </label>
+  </div>
   {{/each}}
-  <div>
-    <input type="submit" value="Submit">
+ 
+  </div>
+  <br>
+  <div class="row">
+  <div class=" but col s10" >
+    <input style="padding:10px; background-color:rgb(12, 195, 12); color:white" type="submit" value="Submit">
+  </div>
   </div>
 </form>
 </div>
