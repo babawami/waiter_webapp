@@ -33,12 +33,17 @@ module.exports = (pool) => {
         enteredName = enteredName.charAt(0).toUpperCase() + enteredName.slice(1);
         let waiter = await pool.query('SELECT * FROM waiters where names = $1', [enteredName]);
         let userID = waiter.rows[0].id;
+
         if (userID) {
             await pool.query('DELETE FROM days_booked WHERE name_id=$1', [userID]);
         }
         for (let dayId of scheduleday) {
-            let foundId = await pool.query('SELECT id From weekdays WHERE weekday=$1', [dayId]);
-            await pool.query('INSERT INTO days_booked(name_id, daybooked_id) VALUES($1,$2)', [userID, foundId.rows[0].id]);
+            if (dayId) {
+                let foundId = await pool.query('SELECT id From weekdays WHERE weekday=$1', [dayId]);
+                await pool.query('INSERT INTO days_booked(name_id, daybooked_id) VALUES($1,$2)', [userID, foundId.rows[0].id]);
+            } else {
+                return;
+            }
         }
     };
 
